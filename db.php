@@ -3,10 +3,10 @@
 // STEP 1: DATABASE CONNECTION (db.php)
 // This file connects to MySQL. Every other PHP file includes this.
 // ============================================================
-
+//My Name is suman Thapa
 define('DB_HOST', 'localhost');
-define('DB_USER', 'root');        // Change to your MySQL username
-define('DB_PASS', '');            // Change to your MySQL password
+define('DB_USER', 'suman');        // Change to your MySQL username
+define('DB_PASS', 'suman123');            // Change to your MySQL password
 define('DB_NAME', 'jersey_club');
 
 // Create connection using mysqli
