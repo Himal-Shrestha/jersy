@@ -15,11 +15,22 @@ $where = "WHERE o.user_id = '$uid'";
 if ($status_filter) $where .= " AND o.status = '$status_filter'";
 
 $orders = $conn->query("
-    SELECT o.*, j.name as jersey_name, j.image, j.team, j.category
-    FROM orders o
-    JOIN jerseys j ON o.jersey_id = j.id
-    $where
-    ORDER BY o.ordered_at DESC
+  SELECT
+    o.*,
+    j.name AS jersey_name,
+    j.image,
+    j.team,
+    j.category,
+    p.payment_status,
+    p.payment_method,
+    p.amount
+FROM orders o
+JOIN jerseys j
+    ON o.jersey_id = j.id
+LEFT JOIN payments p
+    ON p.order_id = o.id
+ORDER BY o.ordered_at DESC;
+
 ");
 ?>
 <!DOCTYPE html>
@@ -91,7 +102,8 @@ $orders = $conn->query("
                             <th>Size</th>
                             <th>Qty</th>
                             <th>Total</th>
-                            <th>Status</th>
+                            <th>Booking Status</th>
+                            <th>Payment Status</th>
                             <th>Ordered On</th>
                         </tr>
                     </thead>
@@ -126,6 +138,7 @@ $orders = $conn->query("
                                     ?>
                                 </span>
                             </td>
+                            <td><?= $order['payment_status'] ?></td>
                             <td><?= date('M d, Y', strtotime($order['ordered_at'])) ?></td>
                         </tr>
                         <?php endwhile; ?>

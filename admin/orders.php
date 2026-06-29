@@ -30,13 +30,27 @@ if ($search) $where .= " AND (u.name LIKE '%$search%' OR u.email LIKE '%$search%
 $highlight_id = (int)($_GET['update_id'] ?? 0);
 
 $orders = $conn->query("
-    SELECT o.*, u.name as user_name, u.email as user_email, u.phone as user_phone,
-           j.name as jersey_name, j.team, j.image, j.category
-    FROM orders o
-    JOIN users u ON o.user_id = u.id
-    JOIN jerseys j ON o.jersey_id = j.id
-    $where
-    ORDER BY o.ordered_at DESC
+SELECT
+    o.*,
+    u.name AS user_name,
+    u.email AS user_email,
+    u.phone AS user_phone,
+    j.name AS jersey_name,
+    j.team,
+    j.image,
+    j.category,
+    p.payment_status,
+    p.payment_method,
+    p.ref_id
+FROM orders o
+JOIN users u
+    ON o.user_id = u.id
+JOIN jerseys j
+    ON o.jersey_id = j.id
+LEFT JOIN payments p
+    ON p.order_id = o.id
+$where
+ORDER BY o.ordered_at DESC
 ");
 
 // Count by status for tabs
@@ -201,6 +215,7 @@ $counts['all'] = array_sum($counts);
                             <th>Size</th>
                             <th>Qty</th>
                             <th>Total</th>
+                            <th>Payment Status</th>
                             <th>Shipping Address</th>
                             <th>Date</th>
                             <th>Update Status</th>
@@ -257,6 +272,22 @@ $counts['all'] = array_sum($counts);
 
                             <!-- Total -->
                             <td><strong><?= formatPrice($order['total_price']) ?></strong></td>
+
+                            <td>
+                                <?php
+                                if ($order['payment_status'] == 'success') {
+                                    echo '<span class="status-badge status-delivered">✅ Paid</span>';
+                                } elseif ($order['payment_status'] == 'unpaid') {
+                                    echo '<span class="status-badge status-pending">💵 COD / Unpaid</span>';
+                                } elseif ($order['payment_status'] == 'failed') {
+                                    echo '<span class="status-badge status-cancelled">❌ Failed</span>';
+                                } else {
+                                    echo '<span class="status-badge">—</span>';
+                                }
+                                ?>
+                                <br>
+                                <small><?= ucfirst($order['payment_method'] ?? '-') ?></small>
+                            </td>
 
                             <!-- Shipping Address -->
                             <td>
