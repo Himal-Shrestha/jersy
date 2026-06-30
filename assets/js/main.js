@@ -110,15 +110,15 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // 8. LOADING SPINNER on form submit
-    document.querySelectorAll('form').forEach(form => {
-        form.addEventListener('submit', function () {
-            const btn = this.querySelector('button[type="submit"]');
-            if (btn && !btn.dataset.noLoading) {
-                btn.innerHTML = '<span class="spinner"></span> Please wait...';
-                btn.disabled = true;
-            }
-        });
-    });
+    // document.querySelectorAll('form').forEach(form => {
+    //     form.addEventListener('submit', function () {
+    //         const btn = this.querySelector('button[type="submit"]');
+    //         if (btn && !btn.dataset.noLoading) {
+    //             btn.innerHTML = '<span class="spinner"></span> Please wait...';
+    //             btn.disabled = true;
+    //         }
+    //     });
+    // });
 
     // 9. SIDEBAR ACTIVE LINK highlight
     const currentPath = window.location.pathname.split('/').pop();

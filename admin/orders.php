@@ -8,16 +8,8 @@ requireAdminLogin();
 
 $msg = $error = '';
 
-// ---- UPDATE ORDER STATUS ----
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_status'])) {
-    $order_id   = (int)$_POST['order_id'];
-    $new_status = sanitize($conn, $_POST['status']);
-    $allowed    = ['pending', 'processing', 'shipped', 'delivered', 'cancelled'];
-    if (in_array($new_status, $allowed)) {
-        $conn->query("UPDATE orders SET status='$new_status' WHERE id='$order_id'");
-        $msg = "Order #$order_id status updated to " . ucfirst($new_status) . ".";
-    }
-}
+
+
 
 // ---- FILTERS ----
 $status_filter = sanitize($conn, $_GET['status'] ?? '');
@@ -304,7 +296,7 @@ $counts['all'] = array_sum($counts);
 
                             <!-- Update Status Form -->
                             <td>
-                                <form method="POST" class="status-form">
+                                <form method="POST" action="update_status.php" class="status-form">  
                                     <input type="hidden" name="order_id" value="<?= $order['id'] ?>">
                                     <select name="status">
                                         <option value="pending"    <?= $order['status']==='pending'    ? 'selected' : '' ?>>⏳ Pending</option>
@@ -313,7 +305,8 @@ $counts['all'] = array_sum($counts);
                                         <option value="delivered"  <?= $order['status']==='delivered'  ? 'selected' : '' ?>>✅ Delivered</option>
                                         <option value="cancelled"  <?= $order['status']==='cancelled'  ? 'selected' : '' ?>>❌ Cancelled</option>
                                     </select>
-                                    <button type="submit" name="update_status" class="btn btn-green btn-sm">Save</button>
+                                    <!-- <input type="submit" value="update_status" name="update_status"> -->
+                                    <button type="submit" name="update_status" class="btn btn-green btn-sm"  value="update_status">Save</button>
                                 </form>
                             </td>
 

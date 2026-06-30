@@ -51,8 +51,8 @@ $signature = base64_encode(hash_hmac('sha256', $message, '8gBm/:&EnhH.1/q', true
     <input type="hidden" name="product_code"             value="EPAYTEST">
     <input type="hidden" name="product_service_charge"   value="0">
     <input type="hidden" name="product_delivery_charge"  value="0">
-    <input type="hidden" name="success_url"              value="http://localhost/jersy/payment/esewa_success.php">
-    <input type="hidden" name="failure_url"              value="http://localhost/jersy/payment/esewa_failure.php">
+    <input type="hidden" name="success_url"              value="http://localhost/jersey_club/payment/esewa_success.php">
+    <input type="hidden" name="failure_url"              value="http://localhost/jersey_club/payment/esewa_failure.php">
     <input type="hidden" name="signed_field_names"       value="total_amount,transaction_uuid,product_code">
     <input type="hidden" name="signature"                value="<?= $signature ?>">
 </form>
